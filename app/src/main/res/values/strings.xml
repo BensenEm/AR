@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">HelloAR</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="vehicle_name">SL 650</string>
+    <string name="vehicle_top_speed">302</string>
+    <string name="vehicle_power">350</string>
+    <string name="vehicle_financing">200</string>
+    <string name="vehicle_accelaration">4.0</string>
+    <string name="vehicle_attribute_x"> Allrad</string>
+    <string name="vehicle_attribute_y">Premium</string>
+    <string name="vehicle_attribute_z">Extras</string>
+</resources>
