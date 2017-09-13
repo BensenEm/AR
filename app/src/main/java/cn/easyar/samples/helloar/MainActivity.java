@@ -13,37 +13,30 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Animatable;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.util.Log;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
-import cn.easyar.Drawable;
-import cn.easyar.Image;
 import cn.easyar.engine.EasyAR;
-import cn.easyar.samples.helloar.databinding.ActivityMainBinding;
-import cn.easyar.samples.helloar.databinding.ActivityTeaserFullBinding;
 import de.materna.ar.model.Vehicle;
 import de.materna.ar.model.VehicleBuilder;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends AppCompatActivity implements ArListener {
@@ -58,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ArListener {
     */
     private static String key = "5h2ccGDFwB5Ce8f8ZmclfYaSONJshe1iqTxiAKQkCN50sKKXJheWFi13N9z4Q3qFgiWJlG8EP7vwCNTM7btO5ppjiX4Z7ytzqtm6gDTpqgmJxFIOT0aKuiDmagqBi7g5uCul0Hg01uTuoDITdFlH2QOnK30JCH6dNeBGwh5rf3mvF6zfmEpe9y1UEhjdoIRUnmj4jyp5";
     private GLView glView;
-    public TextView sampleText;
+    public TextView vehicle_intro;
     public ConstraintLayout m_widget;
     public ImageView m_imageView;
     public ImageView buttonBorder;
@@ -66,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ArListener {
     public ImageButton m_button;
     public Context context;
     public Vehicle vehicle;
-    public ImageButton testButton;
+    public FrameLayout buttonFrame;
 
 
     @Override
@@ -80,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements ArListener {
         }
         vehicle = VehicleBuilder.create()
                 .name("SE 750")
-                .introShort("Intro Texte an dieser Stelle könnnen ruhig auch etwas länger sein, oder täusche ich mich? Falls nein bitte ansagen...")
+                .introShort("Premium Cabriolet")
                 .power(420)
                 .acceleration(3.8f)
                 .topSpeed(305)
@@ -90,13 +83,18 @@ public class MainActivity extends AppCompatActivity implements ArListener {
                 .z("Premium")
                 .build();
 
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/OpenSans-Light.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
         m_button = (ImageButton) findViewById(R.id.button_more);
-        testButton = (ImageButton) findViewById(R.id.testbutton);
         m_widget = (ConstraintLayout) findViewById(R.id.widget);
         glView = new GLView(this, this);
         context = getBaseContext();
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setVehicle(vehicle);
+        buttonFrame =(FrameLayout) findViewById(R.id.button_frame);
+//        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+//        binding.setVehicle(vehicle);
 
         requestCameraPermission(new PermissionCallback() {
             @Override
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements ArListener {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.e("UI Thread", "I am the UI thread");
+                Log.d("UI Thread", "I am the UI thread");
                 m_widget.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
 
                 android.graphics.drawable.Drawable drawable = m_button.getDrawable();
@@ -123,14 +121,11 @@ public class MainActivity extends AppCompatActivity implements ArListener {
                 if (!visible) {
 
                     if (drawable instanceof Animatable) {
-                        Log.e("Animatable", "yes");
                         ((Animatable) drawable).stop();
-//                        ((Animatable) drawable2).stop();
                     }
                 }
                 if (visible) {
                     if (drawable instanceof Animatable) {
-                        Log.e("Animatable", "yes");
                         ((Animatable) drawable).start();
 
                     }
@@ -146,12 +141,17 @@ public class MainActivity extends AppCompatActivity implements ArListener {
             @Override
             public void run() {
 
-                Log.e("POSITION", "" + x+ "--"+ y);
+                Log.d("POSITION", "" + x + "--" + y);
 //                sampleText.setText("I am " + Build.MODEL);
-                m_widget.setY(y);
-                m_widget.setX(x);
-                testButton.setX(x);
-                testButton.setY(y);
+                int height = m_widget.getHeight();
+                int width = m_widget.getWidth();
+                m_widget.layout((int)x, (int)y, (int)x+width, (int)y+height );
+//                int buttonFrameHeight = buttonFrame.getHeight();
+//                int buttonFrameWidth = buttonFrame.getWidth();
+//                int spacer = 50;
+//                Log.e("WIDTHS!", "Height "+buttonFrameHeight+" Width "+buttonFrameWidth+" Spacer "+spacer);
+                //uttonFrame.layout((width-spacer), (height-spacer),(width+buttonFrameWidth-spacer), (height+buttonFrameHeight-spacer));
+
             }
         });
 
@@ -234,7 +234,13 @@ public class MainActivity extends AppCompatActivity implements ArListener {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called when the user taps the Send button */
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+    /**
+     * Called when the user taps the Send button
+     */
     public void goToTeaserFull(View view) {
         Intent intent = new Intent(this, TeaserFull.class);
         Bundle bundle = new Bundle();
@@ -242,7 +248,6 @@ public class MainActivity extends AppCompatActivity implements ArListener {
         intent.putExtras(bundle);
         startActivity(intent);
     }
-
 
 
 }
