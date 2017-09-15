@@ -11,23 +11,25 @@ package cn.easyar.samples.helloar;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -37,6 +39,8 @@ import de.materna.ar.model.Vehicle;
 import de.materna.ar.model.VehicleBuilder;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static java.security.AccessController.getContext;
 
 
 public class MainActivity extends AppCompatActivity implements ArListener {
@@ -52,14 +56,17 @@ public class MainActivity extends AppCompatActivity implements ArListener {
     private static String key = "5h2ccGDFwB5Ce8f8ZmclfYaSONJshe1iqTxiAKQkCN50sKKXJheWFi13N9z4Q3qFgiWJlG8EP7vwCNTM7btO5ppjiX4Z7ytzqtm6gDTpqgmJxFIOT0aKuiDmagqBi7g5uCul0Hg01uTuoDITdFlH2QOnK30JCH6dNeBGwh5rf3mvF6zfmEpe9y1UEhjdoIRUnmj4jyp5";
     private GLView glView;
     public TextView vehicle_intro;
-    public ConstraintLayout m_widget;
+    public LinearLayout m_widget;
     public ImageView m_imageView;
     public ImageView buttonBorder;
     public android.graphics.drawable.Drawable boarder;
-    public ImageButton m_button;
+    Button button;
     public Context context;
     public Vehicle vehicle;
     public FrameLayout buttonFrame;
+    public AnimatedVectorDrawable vectorAnimation;
+    public Drawable current;
+    public StateListDrawable btnAnimation;
 
 
     @Override
@@ -88,11 +95,29 @@ public class MainActivity extends AppCompatActivity implements ArListener {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-        m_button = (ImageButton) findViewById(R.id.button_more);
-        m_widget = (ConstraintLayout) findViewById(R.id.widget);
+        button = (Button) findViewById(R.id.button);
+        button.setOnHoverListener(new View.OnHoverListener() {
+            @Override
+            public boolean onHover(View v, MotionEvent event) {
+
+                Drawable img = context.getResources().getDrawable(R.drawable.microphone_normal);
+
+                if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
+                    img = context.getResources().getDrawable(R.drawable.microphone_blue);
+                }
+                if (event.getAction() == MotionEvent.ACTION_HOVER_EXIT || event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
+                    img.setBounds(0, 0, 24, 24);
+                    button.setCompoundDrawables(img, null, null, null);
+                    event.getAction();
+                }
+                return false;
+            }
+        });
+
+
+        m_widget = (LinearLayout) findViewById(R.id.widget);
         glView = new GLView(this, this);
         context = getBaseContext();
-        buttonFrame =(FrameLayout) findViewById(R.id.button_frame);
 //        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 //        binding.setVehicle(vehicle);
 
@@ -116,21 +141,6 @@ public class MainActivity extends AppCompatActivity implements ArListener {
                 Log.d("UI Thread", "I am the UI thread");
                 m_widget.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
 
-                android.graphics.drawable.Drawable drawable = m_button.getDrawable();
-
-                if (!visible) {
-
-                    if (drawable instanceof Animatable) {
-                        ((Animatable) drawable).stop();
-                    }
-                }
-                if (visible) {
-                    if (drawable instanceof Animatable) {
-                        ((Animatable) drawable).start();
-
-                    }
-                }
-
             }
         });
     }
@@ -142,16 +152,14 @@ public class MainActivity extends AppCompatActivity implements ArListener {
             public void run() {
 
                 Log.d("POSITION", "" + x + "--" + y);
-//                sampleText.setText("I am " + Build.MODEL);
                 int height = m_widget.getHeight();
                 int width = m_widget.getWidth();
-                m_widget.layout((int)x, (int)y, (int)x+width, (int)y+height );
-//                int buttonFrameHeight = buttonFrame.getHeight();
-//                int buttonFrameWidth = buttonFrame.getWidth();
-//                int spacer = 50;
-//                Log.e("WIDTHS!", "Height "+buttonFrameHeight+" Width "+buttonFrameWidth+" Spacer "+spacer);
-                //uttonFrame.layout((width-spacer), (height-spacer),(width+buttonFrameWidth-spacer), (height+buttonFrameHeight-spacer));
-
+                m_widget.layout((int) x, (int) y, (int) x + width, (int) y + height);
+                int buttonHeight = button.getHeight();
+                int buttonWidth = button.getWidth();
+                int spacer = 50;
+                ;
+//                button.layout((width-spacer),(height-spacer),(width-spacer+buttonWidth), (height-spacer+buttonHeight));
             }
         });
 
@@ -183,7 +191,8 @@ public class MainActivity extends AppCompatActivity implements ArListener {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (permissionCallbacks.containsKey(requestCode)) {
             PermissionCallback callback = permissionCallbacks.get(requestCode);
             permissionCallbacks.remove(requestCode);
@@ -238,16 +247,27 @@ public class MainActivity extends AppCompatActivity implements ArListener {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
+
     /**
      * Called when the user taps the Send button
      */
-    public void goToTeaserFull(View view) {
-        Intent intent = new Intent(this, TeaserFull.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("Vehicle", vehicle);
-        intent.putExtras(bundle);
-        startActivity(intent);
+//    public void goToTeaserFull(View view) {
+//        Intent intent = new Intent(this, TeaserFull.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("Vehicle", vehicle);
+//        intent.putExtras(bundle);
+//        startActivity(intent);
+//    }
+    public void buttonCallback(View view) {
+        button = (Button) findViewById(R.id.button);
+        //StateListDrawable as Drawable is taken via Selector in "button_main.xml"
+        btnAnimation = (StateListDrawable) button.getBackground();
+        current = btnAnimation.getCurrent();
+        if (current instanceof AnimatedVectorDrawable) {
+            vectorAnimation = (AnimatedVectorDrawable) current;
+            vectorAnimation.stop();
+            vectorAnimation.start();
+        }
     }
-
 
 }

@@ -6,10 +6,6 @@
     <path
         android:name="button"
         android:fillColor="#00AAAAAA"
-        android:strokeColor="@android:color/primary_text_light"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="bevel"
-        android:strokeWidth="1"
         android:fillAfter = "true"
         android:pathData="M 0,0 L 24,0 L 24,24 L 0,24 Z"/>
 </vector>

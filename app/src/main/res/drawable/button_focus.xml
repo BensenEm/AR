@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+
+    <path
+        android:strokeColor="@color/ar_light_blue"
+        android:fillColor="@android:color/white"
+        android:pathData="M0,0 l24,0 l0,24 l-24,0 z"
+        android:strokeWidth="1"/>
+
+    <path
+        android:name="rectangle_stroke_2"
+        android:pathData="M0,0 l24,0 l0,24 l-24,0 z"
+        android:strokeColor="@color/ar_light_blue"
+        android:strokeWidth="4" />
+
+</vector>

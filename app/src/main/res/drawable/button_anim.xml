@@ -1,7 +1,10 @@
-<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/button" >
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/button_focus">
+
     <target
-        android:name="button"
-        android:animation="@anim/button" />
+        android:name="rectangle_stroke_2"
+        android:animation="@anim/stroke_anim"/>
 
 </animated-vector>

@@ -241,8 +241,8 @@ public class HelloAR {
             updateViewport();
             GLES20.glViewport(viewport.data[0], viewport.data[1], viewport.data[2], viewport.data[3]);
 
-            if (videobg_renderer != null && Build.MODEL.equals("PRA-LX1")) {
-                videobg_renderer.render(frame, viewport);
+            if (videobg_renderer != null ) {
+//                videobg_renderer.render(frame, viewport);
             }
             int amountTargetsTracked = frame.targetInstances().size();
 //            Log.e("Target Instances Amount", amountTargetsTracked + "");

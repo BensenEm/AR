@@ -1,7 +1,0 @@
-<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/circle" >
-    <target
-        android:name="circle"
-        android:animation="@anim/circlerotation" />
-
-</animated-vector>
