@@ -14,7 +14,7 @@
         android:layout_height="720px"
         android:background="#2F008800"
         android:clipChildren="false">
-<!--CLOSE BUTTON-->
+        <!--CLOSE BUTTON-->
         <Button
             android:id="@+id/button_close"
             fontPath="fonts/OpenSans-Light.ttf"
@@ -31,7 +31,7 @@
             android:textColor="@android:color/white"
             android:textSize="24px" />
 
-<!--BACKGROUND        -->
+        <!--BACKGROUND        -->
         <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/frameScreen2"
@@ -78,32 +78,39 @@
         </android.support.constraint.ConstraintLayout>
 
 
-<!--VIDEO CONTAINER-->
+        <!--VIDEO CONTAINER-->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="84px"
             android:layout_gravity="bottom"
+            android:layout_marginBottom="84px"
             android:layout_marginLeft="200px"
-            android:clipChildren="false">
+            android:clipChildren="true">
 
-            <ImageView
+            <FrameLayout
                 android:id="@+id/videoContainer"
                 android:layout_width="512px"
                 android:layout_height="341px"
-                android:background="#7f6688AA"
-                android:elevation="2dp"/>
+                android:background="@android:color/black">
+
+
+                <VideoView
+                    android:id="@+id/video"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"/>
+            </FrameLayout>
 
             <TextView
+                fontPath="fonts/OpenSans-Light.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fontPath="fonts/OpenSans-Light.ttf"
-                android:textColor="@android:color/white"
-                android:text="@{vehicle.videoTitle}"
-                android:layout_alignLeft="@id/videoContainer"
                 android:layout_alignBottom="@id/videoContainer"
-                android:layout_marginLeft="28px"
+                android:layout_alignLeft="@id/videoContainer"
                 android:layout_marginBottom="28px"
+                android:layout_marginLeft="28px"
+                android:text="@{vehicle.videoTitle}"
+                android:textColor="@android:color/white"
 
                 />
 
@@ -127,13 +134,12 @@
                 android:textSize="24px" />
         </RelativeLayout>
 
-<!--STATS CONTAINER        -->
+        <!--STATS CONTAINER        -->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="84px"
-            >
+            android:layout_marginBottom="84px">
 
 
             <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
