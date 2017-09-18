@@ -13,12 +13,16 @@
         android:layout_height="match_parent">
 
     </FrameLayout>
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="@color/ar_light_blue"
-    android:textSize="20dp"
-    android:text="App is running ..."/>
+
+    <TextView
+        android:id="@+id/test_view"
+        android:layout_margin="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App is running ..."
+        android:textColor="@color/ar_light_blue"
+        android:textSize="40dp" />
+
     <LinearLayout
         android:id="@+id/widget"
         android:layout_width="wrap_content"
@@ -44,7 +48,6 @@
                 fontPath="fonts/Lora-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SL478"
                 android:textColor="#FFFFFF"
                 android:textSize="72dp"
                 tools:ignore="MissingPrefix" />
@@ -57,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingTop="8dp"
-                android:text="Premium Cabriolet"
                 android:textColor="#FFFFFF"
                 android:textSize="24dp"
                 tools:ignore="MissingPrefix" />
@@ -73,7 +75,7 @@
             android:background="@drawable/button_main"
             android:drawableLeft="@drawable/microphone_normal"
             android:drawablePadding="16dp"
-            android:onClick="buttonCallback"
+            android:onClick="goToTeaserFull"
             android:padding="16dp"
             android:scaleType="fitXY"
             android:text="More"

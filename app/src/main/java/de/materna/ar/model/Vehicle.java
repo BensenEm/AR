@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by bmolnar on 07.09.2017.
  */
 
-public class Vehicle implements Parcelable {
+public class Vehicle {
 
     private String introShort;
     private String name;
@@ -15,6 +15,7 @@ public class Vehicle implements Parcelable {
     private String power;
     private String financing;
     private String acceleration;
+    private String videoTitle;
     private String x;
     private String y;
     private String z;
@@ -42,6 +43,8 @@ public class Vehicle implements Parcelable {
     public void setAcceleration(float a) {
         this.acceleration = a + " Sek. 0-100";
     }
+
+    public void setVideoTitle(String t){this.videoTitle = t;}
 
     public void setX(String x) {
         this.x = x;
@@ -79,6 +82,8 @@ public class Vehicle implements Parcelable {
         return acceleration;
     }
 
+    public String getVideoTitle(){ return videoTitle; }
+
     public String getX() {
         return x;
     }
@@ -91,13 +96,7 @@ public class Vehicle implements Parcelable {
         return z;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
 
     }
-}
+

@@ -46,6 +46,11 @@ public class VehicleBuilder {
         return this;
     }
 
+    public VehicleBuilder videoTitle(String videoTitle) {
+        vehicle.setVideoTitle(videoTitle);
+        return this;
+    }
+
     public VehicleBuilder x(String x) {
         vehicle.setX(x);
         return this;

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vehicle"
+            type="de.materna.ar.model.Vehicle" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/frameScreen"
+        android:layout_width="1280px"
+        android:layout_height="720px"
+        android:background="#2F008800"
+        android:clipChildren="false">
+<!--CLOSE BUTTON-->
+        <Button
+            android:id="@+id/button_close"
+            fontPath="fonts/OpenSans-Light.ttf"
+            android:layout_width="138px"
+            android:layout_height="56px"
+            android:layout_gravity="top|right"
+            android:background="@color/background_50pc"
+            android:drawableLeft="@drawable/microphone_normal"
+            android:drawablePadding="12px"
+            android:onClick="goToMain"
+            android:padding="12px"
+            android:text="Close"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="24px" />
+
+<!--BACKGROUND        -->
+        <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/frameScreen2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="cn.easyar.samples.helloar.CentralActivity">
+
+            <!-- BACKGROUND ONE -->
+            <ImageView
+                android:id="@+id/background_one"
+                android:layout_width="1025px"
+                android:layout_height="425px"
+                android:layout_marginBottom="56px"
+                android:background="@color/background_50pc"
+                app:layout_constraintBottom_toBottomOf="@id/frameScreen2"
+                app:layout_constraintRight_toRightOf="@id/frameScreen2" />
+
+            <!-- VEHICLE NAME -->
+            <TextView
+                android:id="@+id/vehicle_name"
+                fontPath="fonts/Lora-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vehicle.name}"
+                android:textColor="@android:color/white"
+                android:textSize="72px"
+                app:layout_constraintBottom_toTopOf="@+id/background_one"
+                app:layout_constraintLeft_toLeftOf="@+id/background_one" />
+
+            <!-- INTRO SHORT -->
+            <TextView
+                android:id="@+id/vehicle_introShort"
+                fontPath="fonts/OpenSans-Light.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16px"
+                android:text="@{vehicle.introShort}"
+                android:textColor="@android:color/white"
+                android:textSize="24px"
+                app:layout_constraintBaseline_toBaselineOf="@+id/vehicle_name"
+                app:layout_constraintLeft_toRightOf="@id/vehicle_name" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+<!--VIDEO CONTAINER-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="84px"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="200px"
+            android:clipChildren="false">
+
+            <ImageView
+                android:id="@+id/videoContainer"
+                android:layout_width="512px"
+                android:layout_height="341px"
+                android:background="#7f6688AA"
+                android:elevation="2dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fontPath="fonts/OpenSans-Light.ttf"
+                android:textColor="@android:color/white"
+                android:text="@{vehicle.videoTitle}"
+                android:layout_alignLeft="@id/videoContainer"
+                android:layout_alignBottom="@id/videoContainer"
+                android:layout_marginLeft="28px"
+                android:layout_marginBottom="28px"
+
+                />
+
+            <Button
+                android:id="@+id/button_play"
+                fontPath="fonts/OpenSans-Light.ttf"
+                android:layout_width="135px"
+                android:layout_height="56px"
+                android:layout_alignRight="@id/videoContainer"
+                android:layout_below="@id/videoContainer"
+                android:layout_marginRight="-28px"
+                android:layout_marginTop="-28px"
+                android:background="@drawable/button_main"
+                android:drawableLeft="@drawable/microphone_normal"
+                android:drawablePadding="12px"
+                android:onClick="goToVideoPlay"
+                android:padding="12px"
+                android:text="Play"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color_selector"
+                android:textSize="24px" />
+        </RelativeLayout>
+
+<!--STATS CONTAINER        -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="84px"
+            >
+
+
+            <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/textContainer"
+                android:layout_width="512px"
+                android:layout_height="341px"
+                android:background="@color/background_50pc"
+                android:padding="28px">
+
+                <TextView
+                    android:id="@+id/vehicle_topSpeed"
+                    fontPath="fonts/OpenSans-Light.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vehicle.topSpeed}"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/vehicle_power"
+                    fontPath="fonts/OpenSans-Light.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vehicle.power}"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vehicle_topSpeed" />
+
+
+                <TextView
+                    android:id="@+id/vehicle_x"
+                    fontPath="fonts/OpenSans-Light.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vehicle.x}"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vehicle_power" />
+
+                <TextView
+                    android:id="@+id/vehicle_y"
+                    fontPath="fonts/OpenSans-Light.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vehicle.y}"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vehicle_x" />
+
+                <TextView
+                    android:id="@+id/vehicle_financing"
+                    fontPath="fonts/OpenSans-Light.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vehicle.financing}"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vehicle_y" />
+            </android.support.constraint.ConstraintLayout>
+
+            <Button
+                android:id="@+id/button_details"
+                fontPath="fonts/OpenSans-Light.ttf"
+                android:layout_width="160px"
+                android:layout_height="56px"
+                android:layout_alignRight="@+id/textContainer"
+                android:layout_below="@id/textContainer"
+                android:layout_marginRight="56px"
+                android:layout_marginTop="-28px"
+                android:background="@drawable/button_main"
+                android:drawableLeft="@drawable/microphone_normal"
+                android:drawablePadding="12px"
+                android:onClick="goToDetails"
+                android:padding="12px"
+                android:text="Details"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color_selector"
+                android:textSize="24px" />
+        </RelativeLayout>
+
+
+    </FrameLayout>
+</layout>
+

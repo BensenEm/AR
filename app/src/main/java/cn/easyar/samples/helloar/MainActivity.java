@@ -11,6 +11,7 @@ package cn.easyar.samples.helloar;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,7 +20,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.method.KeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -40,10 +44,16 @@ import de.materna.ar.model.VehicleBuilder;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static java.security.AccessController.getContext;
+
+//SENSORS FOR EPSON MOVERIO
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 
-public class MainActivity extends AppCompatActivity implements ArListener {
+
+public class MainActivity extends AppCompatActivity implements ArListener, SensorEventListener, KeyListener {
     /*
     * Steps to create the key for this sample:
     *  1. login www.easyar.com
@@ -67,7 +77,12 @@ public class MainActivity extends AppCompatActivity implements ArListener {
     public AnimatedVectorDrawable vectorAnimation;
     public Drawable current;
     public StateListDrawable btnAnimation;
-
+    TextView testView;
+    TextView vehicleIntroShort;
+    TextView vehicleName;
+    int tapCounterRight = 0;
+    int tapCounterLeft = 0;
+    public static final int HEADSET_TAP = 0x00002001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +110,16 @@ public class MainActivity extends AppCompatActivity implements ArListener {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+        testView = (TextView) findViewById(R.id.test_view);
+        vehicleName =(TextView) findViewById(R.id.vehicle_name);
+        vehicleName.setText(vehicle.getName());
+        vehicleIntroShort.setText(vehicle.getIntroShort());
+        vehicleIntroShort =(TextView) findViewById(R.id.vehicle_introShort);
         button = (Button) findViewById(R.id.button);
         button.setOnHoverListener(new View.OnHoverListener() {
             @Override
             public boolean onHover(View v, MotionEvent event) {
-
                 Drawable img = context.getResources().getDrawable(R.drawable.microphone_normal);
-
                 if (event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
                     img = context.getResources().getDrawable(R.drawable.microphone_blue);
                 }
@@ -114,6 +132,9 @@ public class MainActivity extends AppCompatActivity implements ArListener {
             }
         });
 
+        SensorManager sm = (SensorManager)getSystemService(SENSOR_SERVICE);
+        Sensor sensor = sm.getDefaultSensor(HEADSET_TAP);
+        sm.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         m_widget = (LinearLayout) findViewById(R.id.widget);
         glView = new GLView(this, this);
@@ -162,6 +183,53 @@ public class MainActivity extends AppCompatActivity implements ArListener {
 //                button.layout((width-spacer),(height-spacer),(width-spacer+buttonWidth), (height-spacer+buttonHeight));
             }
         });
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType() == HEADSET_TAP){
+            testView.setText("Tapping..."+ tapCounterRight++);
+
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    public int getInputType() {
+        return 0;
+    }
+
+    @Override
+    public boolean onKeyDown(View view, Editable text, int keyCode, KeyEvent event) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onKeyUp(View view, Editable text, int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                button.setFocusableInTouchMode(true);
+                button.requestFocus();
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                button.setFocusableInTouchMode(true);
+                button.clearFocus();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onKeyOther(View view, Editable text, KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public void clearMetaKeyState(View view, Editable content, int states) {
 
     }
 
@@ -251,14 +319,14 @@ public class MainActivity extends AppCompatActivity implements ArListener {
     /**
      * Called when the user taps the Send button
      */
-//    public void goToTeaserFull(View view) {
+    public void goToTeaserFull(View view) {
 //        Intent intent = new Intent(this, TeaserFull.class);
 //        Bundle bundle = new Bundle();
 //        bundle.putParcelable("Vehicle", vehicle);
 //        intent.putExtras(bundle);
 //        startActivity(intent);
-//    }
-    public void buttonCallback(View view) {
+    }
+    public void buttonAnimation() {
         button = (Button) findViewById(R.id.button);
         //StateListDrawable as Drawable is taken via Selector in "button_main.xml"
         btnAnimation = (StateListDrawable) button.getBackground();
