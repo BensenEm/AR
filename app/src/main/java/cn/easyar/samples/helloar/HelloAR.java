@@ -8,22 +8,12 @@
 
 package cn.easyar.samples.helloar;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLES20;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.easyar.CameraCalibration;
 import cn.easyar.CameraDevice;
@@ -35,7 +25,6 @@ import cn.easyar.FunctorOfVoidFromPointerOfTargetAndBool;
 import cn.easyar.ImageTarget;
 import cn.easyar.ImageTracker;
 import cn.easyar.Matrix34F;
-import cn.easyar.Matrix44F;
 import cn.easyar.Renderer;
 import cn.easyar.StorageType;
 import cn.easyar.Target;
@@ -43,8 +32,6 @@ import cn.easyar.TargetInstance;
 import cn.easyar.TargetStatus;
 import cn.easyar.Vec2I;
 import cn.easyar.Vec4I;
-
-import static cn.easyar.engine.EasyAR.getApplicationContext;
 
 public class HelloAR {
     public final float SCREEN_WIDTH = 1280.0F;
@@ -60,6 +47,7 @@ public class HelloAR {
     private int rotation = 0;
     private Vec4I viewport = new Vec4I(0, 0, 1280, 720);
     private Context context;
+    boolean visible;
 
     private List<ArListener> listeners;
 
@@ -241,42 +229,45 @@ public class HelloAR {
             updateViewport();
             GLES20.glViewport(viewport.data[0], viewport.data[1], viewport.data[2], viewport.data[3]);
 
-            if (videobg_renderer != null ) {
+            if (videobg_renderer != null) {
 //                videobg_renderer.render(frame, viewport);
             }
             int amountTargetsTracked = frame.targetInstances().size();
 //            Log.e("Target Instances Amount", amountTargetsTracked + "");
 
-            boolean visible = amountTargetsTracked == 1;    //
-            for (ArListener listener : listeners) {
-                listener.updateVisibility(visible);
-            }
 
-
-            for (TargetInstance targetInstance : frame.targetInstances()) {
+            visible = amountTargetsTracked == 1;    //
+            float x = 0;
+            float y = 0;
+//            for (ArListener listener : listeners) {
+//                listener.updateVisibility(visible);
+//            }
+            ArrayList<TargetInstance> targetInstances = frame.targetInstances();
+            for (TargetInstance targetInstance : targetInstances) {
                 int status = targetInstance.status();
 //                Log.e("tracked?: ", "" + status);
 
                 if (status == TargetStatus.Tracked) {
                     Target target = targetInstance.target();
                     ImageTarget imagetarget = target instanceof ImageTarget ? (ImageTarget) (target) : null;
-                    if (imagetarget == null) {
+                    Log.i("[IMAGE TACKER]", "imagetarget = " + (imagetarget == null ? null : imagetarget));
+                    if (imagetarget == null || !visible) { // np target found
                         continue;
-                    }
-                    Matrix34F positionInMatrix34 = targetInstance.pose();
+                    } else {
+                        Log.i("[IMAGE TACKER]", "Image found");
+                        Matrix34F positionInMatrix34 = targetInstance.pose();
+                        showCoordMatrix(positionInMatrix34.data, true);
+                        Vec2I position = transformCoordinates(positionInMatrix34.data);
+                        x = position.data[0];
+                        y = position.data[1];
 
-                    showCoordMatrix(positionInMatrix34.data, true);
-                    Vec2I position = transformCoordinates(positionInMatrix34.data);
-                    for (ArListener listener : listeners) {
-                        listener.updatePosition(position.data[0], position.data[1]);
-                    }
-
-
-                    if (box_renderer != null) {
-                       // box_renderer.render(camera.projectionGL(0.2f, 500.f), targetInstance.poseGL(), imagetarget.size());
+                        if (box_renderer != null) {
+                            // box_renderer.render(camera.projectionGL(0.2f, 500.f), targetInstance.poseGL(), imagetarget.size());
+                        }
                     }
                 }
             }
+            callListeners(x, y, visible);
         } finally {
 //            Log.e("tracked?: ", "disposing");
             frame.dispose();
@@ -302,8 +293,15 @@ public class HelloAR {
         float u, v;
         u = data[3] / data[11];
         v = data[7] / data[11];
-        xScreen = u * SCREEN_WIDTH + SCREEN_WIDTH/2;
-        yScreen = v * SCREEN_WIDTH + SCREEN_HEIGHT/2;
+        xScreen = u * SCREEN_WIDTH + SCREEN_WIDTH / 2;
+        yScreen = v * SCREEN_WIDTH + SCREEN_HEIGHT / 2;
         return new Vec2I((int) xScreen, (int) yScreen);
+    }
+
+    private void callListeners(final float x, final float y, final boolean visible) {
+        for (ArListener listener : listeners) {
+            listener.updatePosition(x, y, visible);
+        }
+
     }
 }

@@ -5,6 +5,6 @@ package cn.easyar.samples.helloar;
  */
 
 public interface ArListener {
-    public void updateVisibility(boolean visible);
-    public void updatePosition(float x, float y);
+    //public void updateVisibility(boolean visible);
+    public void updatePosition(float x, float y, boolean visible);
 }

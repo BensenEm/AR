@@ -37,7 +37,7 @@ public class Vehicle {
     }
 
     public void setFinancing(int f) {
-        this.financing = "ab " + f + "Euro/Monat";
+        this.financing = f + " €/M";
     }
 
     public void setAcceleration(float a) {

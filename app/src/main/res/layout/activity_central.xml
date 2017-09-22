@@ -12,24 +12,27 @@
         android:id="@+id/frameScreen"
         android:layout_width="1280px"
         android:layout_height="720px"
-        android:background="#2F008800"
+        android:background="@color/background_25pc"
         android:clipChildren="false">
         <!--CLOSE BUTTON-->
         <Button
             android:id="@+id/button_close"
             fontPath="fonts/OpenSans-Light.ttf"
-            android:layout_width="138px"
+            android:layout_width="wrap_content"
             android:layout_height="56px"
             android:layout_gravity="top|right"
             android:background="@color/background_50pc"
             android:drawableLeft="@drawable/microphone_normal"
-            android:drawablePadding="12px"
+            android:drawablePadding="@dimen/button_padding"
             android:onClick="goToMain"
-            android:padding="12px"
+            android:paddingBottom="@dimen/button_padding"
+            android:paddingLeft="@dimen/button_padding"
+            android:paddingRight="@dimen/button_padding"
+            android:paddingTop="12px"
             android:text="Close"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="24px" />
+            android:textSize="@dimen/font_default" />
 
         <!--BACKGROUND        -->
         <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -57,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{vehicle.name}"
                 android:textColor="@android:color/white"
-                android:textSize="72px"
+                android:textSize="@dimen/font_large"
                 app:layout_constraintBottom_toTopOf="@+id/background_one"
                 app:layout_constraintLeft_toLeftOf="@+id/background_one" />
 
@@ -70,7 +73,7 @@
                 android:paddingLeft="16px"
                 android:text="@{vehicle.introShort}"
                 android:textColor="@android:color/white"
-                android:textSize="24px"
+                android:textSize="@dimen/font_default"
                 app:layout_constraintBaseline_toBaselineOf="@+id/vehicle_name"
                 app:layout_constraintLeft_toRightOf="@id/vehicle_name" />
 
@@ -93,15 +96,21 @@
                 android:layout_height="341px"
                 android:background="@android:color/black">
 
+                <ImageView
+                android:id="@+id/img_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/video_teaser" />
 
-                <VideoView
-                    android:id="@+id/video"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"/>
+                <!--<pl.droidsonroids.gif.GifTextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/giphy"/>-->
+
             </FrameLayout>
 
             <TextView
+                android:id="@+id/video_title"
                 fontPath="fonts/OpenSans-Light.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,13 +120,14 @@
                 android:layout_marginLeft="28px"
                 android:text="@{vehicle.videoTitle}"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/font_default"
 
                 />
 
             <Button
                 android:id="@+id/button_play"
                 fontPath="fonts/OpenSans-Light.ttf"
-                android:layout_width="135px"
+                android:layout_width="wrap_content"
                 android:layout_height="56px"
                 android:layout_alignRight="@id/videoContainer"
                 android:layout_below="@id/videoContainer"
@@ -125,13 +135,16 @@
                 android:layout_marginTop="-28px"
                 android:background="@drawable/button_main"
                 android:drawableLeft="@drawable/microphone_normal"
-                android:drawablePadding="12px"
+                android:drawablePadding="@dimen/button_padding"
                 android:onClick="goToVideoPlay"
-                android:padding="12px"
+                android:paddingBottom="12px"
+                android:paddingLeft="@dimen/button_padding"
+                android:paddingRight="@dimen/button_padding"
+                android:paddingTop="12px"
                 android:text="Play"
                 android:textAllCaps="false"
                 android:textColor="@color/text_color_selector"
-                android:textSize="24px" />
+                android:textSize="@dimen/font_default" />
         </RelativeLayout>
 
         <!--STATS CONTAINER        -->
@@ -147,16 +160,21 @@
                 android:id="@+id/textContainer"
                 android:layout_width="512px"
                 android:layout_height="341px"
-                android:background="@color/background_50pc"
-                android:padding="28px">
+                android:background="@color/background_75pc"
+                android:paddingBottom="28px"
+                android:paddingRight="28px"
+                android:paddingTop="28px">
 
                 <TextView
                     android:id="@+id/vehicle_topSpeed"
                     fontPath="fonts/OpenSans-Light.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="12px"
+                    android:paddingLeft="28px"
                     android:text="@{vehicle.topSpeed}"
                     android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_default"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -165,10 +183,14 @@
                     fontPath="fonts/OpenSans-Light.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="12px"
+
+                    android:paddingLeft="28px"
                     android:text="@{vehicle.power}"
                     android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_default"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vehicle_topSpeed" />
+                    app:layout_constraintTop_toBottomOf="@id/vehicle_topSpeed" />
 
 
                 <TextView
@@ -176,36 +198,74 @@
                     fontPath="fonts/OpenSans-Light.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="12px"
+                    android:paddingLeft="28px"
+
                     android:text="@{vehicle.x}"
                     android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_default"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vehicle_power" />
+                    app:layout_constraintTop_toBottomOf="@id/vehicle_power" />
 
                 <TextView
                     android:id="@+id/vehicle_y"
                     fontPath="fonts/OpenSans-Light.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="12px"
+                    android:paddingLeft="28px"
+
                     android:text="@{vehicle.y}"
                     android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_default"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vehicle_x" />
+                    app:layout_constraintTop_toBottomOf="@id/vehicle_x" />
+
+
+                <ImageView
+                    android:id="@+id/background_financing"
+                    android:layout_width="210px"
+                    android:layout_height="34px"
+                    android:paddingLeft="14px"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/rectangle_financing"
+                    android:visibility="invisible"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/vehicle_y" />
 
                 <TextView
                     android:id="@+id/vehicle_financing"
-                    fontPath="fonts/OpenSans-Light.ttf"
+                    fontPath="fonts/OpenSans-Semibold.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="12px"
+                    android:paddingLeft="28px"
+
+
                     android:text="@{vehicle.financing}"
                     android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_default"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vehicle_y" />
+                    app:layout_constraintTop_toTopOf="@id/background_financing" />
+
+                <ImageView
+                    android:id="@+id/arrow_circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5px"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arrow_circle_anim"
+                    android:visibility="invisible"
+                    app:layout_constraintRight_toRightOf="@id/background_financing"
+                    app:layout_constraintTop_toTopOf="@id/background_financing" />
+
             </android.support.constraint.ConstraintLayout>
+
 
             <Button
                 android:id="@+id/button_details"
                 fontPath="fonts/OpenSans-Light.ttf"
-                android:layout_width="160px"
+                android:layout_width="wrap_content"
                 android:layout_height="56px"
                 android:layout_alignRight="@+id/textContainer"
                 android:layout_below="@id/textContainer"
@@ -213,13 +273,16 @@
                 android:layout_marginTop="-28px"
                 android:background="@drawable/button_main"
                 android:drawableLeft="@drawable/microphone_normal"
-                android:drawablePadding="12px"
+                android:drawablePadding="@dimen/button_padding"
                 android:onClick="goToDetails"
-                android:padding="12px"
+                android:paddingBottom="@dimen/button_padding"
+                android:paddingLeft="@dimen/button_padding"
+                android:paddingRight="@dimen/button_padding"
+                android:paddingTop="12px"
                 android:text="Details"
                 android:textAllCaps="false"
                 android:textColor="@color/text_color_selector"
-                android:textSize="24px" />
+                android:textSize="@dimen/font_default" />
         </RelativeLayout>
 
 

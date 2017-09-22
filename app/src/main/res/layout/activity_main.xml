@@ -27,7 +27,8 @@
         android:id="@+id/widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="invisible">
 
         <LinearLayout
             android:id="@+id/background"
@@ -48,7 +49,7 @@
                 fontPath="fonts/Lora-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
+                android:textColor="@android:color/white"
                 android:textSize="72dp"
                 tools:ignore="MissingPrefix" />
 
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingTop="8dp"
-                android:textColor="#FFFFFF"
+                android:textColor="@android:color/white"
                 android:textSize="24dp"
                 tools:ignore="MissingPrefix" />
         </LinearLayout>
@@ -75,7 +76,7 @@
             android:background="@drawable/button_main"
             android:drawableLeft="@drawable/microphone_normal"
             android:drawablePadding="16dp"
-            android:onClick="goToTeaserFull"
+            android:onClick="goToCentralActivity"
             android:padding="16dp"
             android:scaleType="fitXY"
             android:text="More"
